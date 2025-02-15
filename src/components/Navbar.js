@@ -1,10 +1,13 @@
 import React from 'react';
-import Logo from '../assets/pizzaLogo.png';
-import { Link } from 'react-router-dom'
+import Logo from '../assets/pizzaLogo.png'; // Correct import
 
 function Navbar() {
   return (
     <div className='navbar'>
+      <div className="leftSide">
+        <img src={Logo} alt="Pizza Logo" /> {/* Use imported Logo variable */}
+      </div>
+      <div className="rightSide"></div>
         <div className="leftSide">
             <img src={Logo}/>
         </div>
@@ -19,4 +22,4 @@ function Navbar() {
   );
 }
 
-export default Navbar
+export default Navbar;
