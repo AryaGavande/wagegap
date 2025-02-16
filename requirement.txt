@@ -1,0 +1,3 @@
+pip install flask openai flask-cors
+npm install express axios cors dotenv openai
+pip install flask flask-cors google-generativeai python-dotenv
