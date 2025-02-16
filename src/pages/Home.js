@@ -44,12 +44,12 @@ function Home() {
         <div className="feature-list">
           <h3>💡 How Can NegotiateHer Help You?</h3>
           <ul>
-            <li>⚖️ <strong>Legal Aid Guidance:</strong> Learn your rights in pay discrimination cases.</li>
-            <li><strong>Resume & Offer Review:</strong> Get AI-powered feedback on your resume and job offers.</li>
-            <li><strong>Cold Email Generator:</strong> Auto-generate professional salary negotiation emails.</li>
-            <li><strong>Salary Negotiation Roleplay:</strong> Practice HR-style conversations in a safe environment.</li>
-            <li><strong>Industry-Specific Salary Insights:</strong> Get real-time salary benchmarks for your role and location.</li>
-            <li><strong>Negotiation Script Builder:</strong> Receive a customized negotiation script for your industry.</li>
+            <li>⚖️ <strong>Legal Aid Guidance: </strong> Learn your rights in pay discrimination cases.</li>
+            <li><strong>Resume & Offer Review: </strong> Get AI-powered feedback on your resume and job offers.</li>
+            <li><strong>Cold Email Generator: </strong> Auto-generate professional salary negotiation emails.</li>
+            <li><strong>Salary Negotiation Roleplay: </strong> Practice HR-style conversations in a safe environment.</li>
+            <li><strong>Industry-Specific Salary Insights: </strong> Get real-time salary benchmarks for your role and location.</li>
+            <li><strong>Negotiation Script Builder: </strong> Receive a customized negotiation script for your industry.</li>
           </ul>
         </div>
 

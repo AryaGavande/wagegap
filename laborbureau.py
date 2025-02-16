@@ -1,4 +1,18 @@
+from flask import Flask, request, jsonify
 import requests
+from flask_cors import CORS
+import os
+from dotenv import load_dotenv
+import genai
+
+load_dotenv()
+api_key = os.getenv("GOOGLE_API_KEY")
+genai.configure(api_key=api_key)
+
+model = genai.GenerativeModel("gemini-1.5-pro")
+
+app = Flask(__name__)
+CORS(app)
 
 # Extended occupation series mapping
 occupation_series = {
@@ -11,63 +25,33 @@ occupation_series = {
     'postsecondary teacher': 'OEUN000000000000025108113',
 }
 
-# Function to get salary data based on user input
-def get_salary_data(occupation):
-    occupation = occupation.lower()
-    # Check if the occupation exists in the dictionary
+@app.route("/salary", methods=["POST"])
+def get_salary_data():
+    data = request.get_json()
+    occupation = data.get("occupation", "").lower()
+    
     if occupation not in occupation_series:
-        print("Sorry, data for that occupation is not available.")
-        return
+        return jsonify({"error": "Occupation not found"}), 404
     
-    # Get the series ID for the occupation
     series_id = occupation_series[occupation]
-    
-    # Define the BLS API URL
     url = f"https://api.bls.gov/publicAPI/v2/timeseries/data/{series_id}"
-    
-    # Define the parameters (you can customize the years based on the user's request)
     params = {
         'seriesid': series_id,
         'startyear': '2020',
         'endyear': '2023'
     }
     
-    # Make the API request
     response = requests.get(url, params=params)
     
-    # Check if the request was successful
     if response.status_code == 200:
         data = response.json()
         if 'Results' in data and 'series' in data['Results']:
             salary_data = data['Results']['series'][0]['data']
-            print(f"Salary data for {occupation}:")
-            for entry in salary_data:
-                print(f"Year: {entry['year']}, Wage: {entry['value']}")
+            return jsonify(salary_data)
         else:
-            print("No salary data available for this occupation.")
+            return jsonify({"error": "No salary data available"}), 404
     else:
-        print(f"Error: {response.status_code}")
-
-# Example usage
-occupation = input("Enter an occupation: ")
-get_salary_data(occupation)
-
-def main():
-  while True:  
-    # Prompt the user for the occupation/job title
-    occupation = input("Enter an occupation, or type \'exit': ")
-    occupation = occupation.lower()
-
-    # Exit the loop if the user types 'exit'
-    if occupation.lower() == 'exit':
-        break
-
-    # Check if the occupation exists in the predefined mapping
-    if occupation in occupation_series:
-        get_salary_data(occupation)
-
-    else:
-        print(f"Sorry, we don't have data for '{occupation}'. Please try another occupation.")
+        return jsonify({"error": "Failed to fetch data"}), 500
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)

@@ -26,6 +26,7 @@
     padding: 60px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1;
 }
 
 .hero-section h1 {
@@ -81,6 +82,7 @@
 
 .features-section {
     margin-top: 50px;
+    z-index: 1;
 }
 
 .features-section h2 {
