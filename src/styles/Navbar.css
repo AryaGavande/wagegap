@@ -1,5 +1,5 @@
   .navbar {
-    position: relative; /* Ensure the navbar is positioned relative to its normal position */
+    position: relative; 
     z-index: 1000;
     width: 100%;
     height: 100px;

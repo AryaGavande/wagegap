@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Home from "./pages/Home"
 import Bot from './pages/bot.js';
 import Salary from './pages/salary';
+import About from "./pages/about";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/bot" element={<Bot />} />
           <Route path="/salary" element={<Salary />} /> 
+          <Route path="/about" element={<About />} />
         </Routes>
         <Footer />
       </Router>
