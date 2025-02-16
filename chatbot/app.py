@@ -71,7 +71,35 @@ def analyze_resume_api():
         print(f"ERROR: {str(e)}")  
         return jsonify({"error": str(e)}), 500
 
+def extract_text_from_pdf(file):
+    """Extract text from a PDF file."""
+    with pdfplumber.open(file) as pdf:
+        text = "\n".join(page.extract_text() for page in pdf.pages if page.extract_text())
+    return text
 
+@app.route("/analyze-wage", methods=["POST"])
+def analyze_wage():
+    if "file" not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    file = request.files["file"]
+    resume_text = extract_text_from_pdf(file)
+
+    prompt = f"""
+    Analyze the following job offer or pay stub for gender-based wage discrimination.
+    Provide:
+    1. Key salary details.
+    2. Potential wage disparities.
+    3. Legal recommendations for fair pay.
+
+    Document:
+    {resume_text}
+    """
+    response = model.generate_content(prompt)
+    return jsonify({"analysis": response.text})
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5002)
 
 @app.route("/generate-negotiation-script", methods=["POST"])
 def generate_negotiation_script_api():
