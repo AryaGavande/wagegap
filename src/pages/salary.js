@@ -1,57 +1,62 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-
-const occupations = [
-  'software developer',
-  'nurse',
-  'doctor',
-  'data scientist',
-  'construction worker',
-  'lawyer',
-  'postsecondary teacher'
-];
+import "../styles/salary.css"; // Add styling
 
 function Salary() {
-  const [salaryData, setSalaryData] = useState({});
-  const [error, setError] = useState(null);
+  const [occupation, setOccupation] = useState("");
+  const [salaryData, setSalaryData] = useState(null);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchAllSalaryData = async () => {
-      try {
-        const data = {};
-        for (const occupation of occupations) {
-          const response = await axios.post("http://127.0.0.1:5000/salary", { occupation });
-          data[occupation] = response.data;
-        }
-        setSalaryData(data);
-        setError(null);
-      } catch (err) {
-        setError(err.response ? err.response.data.error : "Error connecting to server");
-      }
-    };
+  const fetchSalary = async () => {
+    if (!occupation.trim()) {
+      setError("Please enter a valid occupation.");
+      return;
+    }
 
-    fetchAllSalaryData();
-  }, []);
+    setError(""); // Clear previous errors
+    setSalaryData(null); // Reset data
+
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/salary", {
+        occupation: occupation.toLowerCase(),
+      });
+
+      console.log("Salary API Response:", response.data);
+      setSalaryData(response.data);
+    } catch (err) {
+      console.error("Error fetching salary data:", err);
+      setError("Could not fetch salary data. Try again.");
+    }
+  };
 
   return (
-    <div>
-      <h2>Salary Data</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {Object.keys(salaryData).length > 0 ? (
-        Object.keys(salaryData).map((occupation) => (
-          <div key={occupation}>
-            <h3>Salary Data for {occupation}</h3>
-            <ul>
-              {salaryData[occupation].map((entry, index) => (
-                <li key={index}>
-                  Year: {entry.year}, Wage: {entry.value}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      ) : (
-        <p>Loading salary data...</p>
+    <div className="salary-container">
+      <h2>Salary Insights</h2>
+      <p>Enter a job title to see salary trends.</p>
+
+      <div className="input-container">
+        <input
+          type="text"
+          value={occupation}
+          onChange={(e) => setOccupation(e.target.value)}
+          placeholder="Enter job title (e.g., Software Developer)"
+        />
+        <button onClick={fetchSalary}>Get Salary</button>
+      </div>
+
+      {error && <p className="error">{error}</p>}
+
+      {salaryData && (
+        <div className="salary-data">
+          <h3>Salary Data for {occupation}</h3>
+          <ul>
+            {salaryData.map((item, index) => (
+              <li key={index}>
+                <strong>Year:</strong> {item.year} | <strong>Salary:</strong> ${item.value}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );
