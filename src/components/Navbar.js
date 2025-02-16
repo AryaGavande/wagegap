@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import ReorderIcon from '@mui/icons-material/Reorder';
 import '../styles/Navbar.css';
 
+
 function Navbar() {
 
     const [openLinks, setOpenLinks] = useState(false)
@@ -18,7 +19,7 @@ function Navbar() {
         <img src={Logo} alt="Pizza Logo" /> {/* Use imported Logo variable */}
         <div className="hiddenLinks">
             <Link to="/"> Home </Link>
-            <Link to="/bot"> AI </Link>
+            <Link to="/pages/bot"> AI </Link>
             <Link to="/about"> About </Link>
             <Link to="/contact"> Contact </Link>
         </div>
@@ -26,7 +27,7 @@ function Navbar() {
       
         <div className="rightSide">
             <Link to="/"> Home </Link>
-            <Link to="/bot"> AI </Link>
+            <Link to="/pages/bot"> AI </Link>
             <Link to="/about"> About </Link>
             <Link to="/contact"> Contact </Link>
             <button onCLick={toggleNavbar}>
