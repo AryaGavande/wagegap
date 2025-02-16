@@ -18,7 +18,7 @@ function Navbar() {
         <img src={Logo} alt="Pizza Logo" /> {/* Use imported Logo variable */}
         <div className="hiddenLinks">
             <Link to="/"> Home </Link>
-            <Link to="/menu"> Menu </Link>
+            <Link to="/bot"> AI </Link>
             <Link to="/about"> About </Link>
             <Link to="/contact"> Contact </Link>
         </div>
@@ -26,7 +26,7 @@ function Navbar() {
       
         <div className="rightSide">
             <Link to="/"> Home </Link>
-            <Link to="/menu"> Menu </Link>
+            <Link to="/bot"> AI </Link>
             <Link to="/about"> About </Link>
             <Link to="/contact"> Contact </Link>
             <button onCLick={toggleNavbar}>
