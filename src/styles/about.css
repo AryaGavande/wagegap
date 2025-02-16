@@ -67,3 +67,11 @@
         width: 90%; 
     }
 }
+
+h2 {
+    margin: 20px;
+}
+
+p {
+    margin: 50px top;
+}

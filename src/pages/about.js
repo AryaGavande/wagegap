@@ -18,7 +18,7 @@ function About() {
             <img src="/arya.jpeg" alt="Arya's Cat" className="team-img"/>
             <h3>Arya</h3>
             <p><strong>Major:</strong> Computer Science & Statistics</p>
-            <p><strong>Role:</strong> API integration & Backend Developer</p>
+            <p><strong>Role:</strong> Chatbot API Integration & Backend Developer</p>
             <a href="https://www.linkedin.com/in/arya-gavande" target="_blank" rel="noopener noreferrer">
               LinkedIn
             </a>
@@ -28,8 +28,8 @@ function About() {
           <div className="team-card">
             <img src="/par.jpeg" alt="Parnika's Cat" className="team-img"/>
             <h3>Parnika</h3>
-            <p><strong>Major:</strong> Data Science & Computer Science</p>
-            <p><strong>Role:</strong> Salary Data Research</p>
+            <p><strong>Major:</strong> Computer Science & Data Science</p>
+            <p><strong>Role:</strong> Salary Data Research & BLS API Integration</p>
             <a href="https://www.linkedin.com/in/parnika-dandepally-5a1b03294/" target="_blank" rel="noopener noreferrer">
               LinkedIn
             </a>
