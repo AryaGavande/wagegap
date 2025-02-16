@@ -50,19 +50,27 @@ def chat():
 def analyze_resume_api():
     try:
         if "file" not in request.files:
+            print("No file received!")  
             return jsonify({"error": "No file uploaded"}), 400
 
         file = request.files["file"]
         if file.filename == "":
+            print("Empty file uploaded!")  
             return jsonify({"error": "Empty file uploaded"}), 400
 
+        print(f"Received file: {file.filename}")  
+
         resume_text = extract_text_from_pdf(file)
+        print(f"Extracted Text: {resume_text[:500]}...")  
+
         result = analyze_resume(resume_text)
 
         return jsonify({"analysis": result})
 
     except Exception as e:
+        print(f"ERROR: {str(e)}")  
         return jsonify({"error": str(e)}), 500
+
 
 
 @app.route("/generate-negotiation-script", methods=["POST"])
