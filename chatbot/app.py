@@ -5,7 +5,6 @@ import os
 from dotenv import load_dotenv
 import pdfplumber
 
-# Load API Key
 load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=api_key)
@@ -15,9 +14,11 @@ model = genai.GenerativeModel("gemini-1.5-pro")
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({"message": "Flask API is running!"})
+
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -26,43 +27,51 @@ def chat():
             return jsonify({"error": "Invalid JSON format"}), 400
 
         data = request.get_json()
-        user_input = data.get("message", "")
+        user_input = data.get("message", "").strip()
+
         if not user_input:
             return jsonify({"error": "No input received"}), 400
 
         print(f"User Input: {user_input}")
 
-        # Use globally initialized model
         response = model.generate_content(user_input)
+        bot_reply = response.text
 
-        print(f"AI Response: {response.text}")
+        print(f"AI Response: {bot_reply}")
 
-        return jsonify({"response": response.text})
+        return jsonify({"response": bot_reply})
 
     except Exception as e:
         print(f"ERROR: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
+
 @app.route("/analyze-resume", methods=["POST"])
 def analyze_resume_api():
     try:
         if "file" not in request.files:
+            print("No file received!")  
             return jsonify({"error": "No file uploaded"}), 400
 
         file = request.files["file"]
         if file.filename == "":
+            print("Empty file uploaded!")  
             return jsonify({"error": "Empty file uploaded"}), 400
 
-        # Extract text from PDF
-        resume_text = extract_text_from_pdf(file)
+        print(f"Received file: {file.filename}")  
 
-        # Analyze the resume using AI
+        resume_text = extract_text_from_pdf(file)
+        print(f"Extracted Text: {resume_text[:500]}...")  
+
         result = analyze_resume(resume_text)
-        
+
         return jsonify({"analysis": result})
 
     except Exception as e:
+        print(f"ERROR: {str(e)}")  
         return jsonify({"error": str(e)}), 500
+
+
 
 @app.route("/generate-negotiation-script", methods=["POST"])
 def generate_negotiation_script_api():
@@ -80,11 +89,15 @@ def generate_negotiation_script_api():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
 def extract_text_from_pdf(file):
     """Extract text from a PDF file."""
     with pdfplumber.open(file) as pdf:
-        text = "\n".join(page.extract_text() for page in pdf.pages if page.extract_text())
+        text = "\n".join(
+            page.extract_text() for page in pdf.pages if page.extract_text()
+        )
     return text
+
 
 def analyze_resume(resume_text):
     """Analyze resume for ATS optimization."""
@@ -98,7 +111,8 @@ def analyze_resume(resume_text):
     {resume_text}
     """
     response = model.generate_content(prompt)
-    return response.text 
+    return response.text
+
 
 def generate_negotiation_script(job_title, industry):
     """Generate a salary negotiation script based on job title & industry."""
@@ -111,6 +125,7 @@ def generate_negotiation_script(job_title, industry):
     """
     response = model.generate_content(prompt)
     return response.text
+
 
 if __name__ == "__main__":
     print("🚀 Flask is running on http://127.0.0.1:5001/")
